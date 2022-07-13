@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 using System.Linq;
+using static StaticHexLog;
 
 public class HexSTT : MonoBehaviour
 {
@@ -32,8 +33,7 @@ public class HexSTT : MonoBehaviour
         }
     }
 
-    private void processDictationResult(string text,
-      ConfidenceLevel confidence)
+    private void processDictationResult(string text, ConfidenceLevel confidence)
     {
         Debug.LogFormat("Dictation result: {0}", text);
         string[] words = text.Split(' ');
@@ -47,16 +47,16 @@ public class HexSTT : MonoBehaviour
     {
         dictationRecognizer.DictationResult += processDictationResult;
         dictationRecognizer.DictationHypothesis += (text) => {
-            Debug.LogFormat("Dictation hypothesis: {0}", text);
+            Info("Dictation result: " + text);
         };
         dictationRecognizer.DictationComplete += (completionCause) => {
             if (completionCause != DictationCompletionCause.Complete)
             {
-                Debug.LogErrorFormat("Dictation completed unsuccessfully: {0}.", completionCause);
+                Info("Dictation failed: "+ completionCause);
             }
         };
         dictationRecognizer.DictationError += (error, hresult) => {
-            Debug.LogErrorFormat("Dictation error: {0}; HResult = {1}.", error, hresult);
+            Warn("Dictation error:" + error + " hresult: " + hresult);
         };
     }
 
