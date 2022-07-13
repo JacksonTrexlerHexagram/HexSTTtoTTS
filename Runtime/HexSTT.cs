@@ -10,15 +10,23 @@ public class HexSTT : MonoBehaviour
 
     private DictationRecognizer dictationRecognizer;
 
-    // Start is called before the first frame update
     void Awake()
     {
         dictationRecognizer = new DictationRecognizer();
         subscribeToEvents();
     }
 
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            startRecognition();
+        }
+    }
+
     public void startRecognition()
     {
+        Debug.Log("Start");
         if (dictationRecognizer.Status != SpeechSystemStatus.Running) 
         {
             dictationRecognizer.Start();
@@ -35,11 +43,33 @@ public class HexSTT : MonoBehaviour
 
     private void processDictationResult(string text, ConfidenceLevel confidence)
     {
-        Debug.LogFormat("Dictation result: {0}", text);
+        Info("Dictation result: " + text);
         string[] words = text.Split(' ');
-        if (words[0] == "Hexagram")
+        /*
+        if (words[3] == "stan")
         {
-            OnApplicationQuit().Quit();
+            //Application.Quit();
+            Debug.Log("!!Solarboy!!: Hi Stan!");
+        }
+        else if (words[0] == "test")
+        {
+            //Application.Quit();
+            Debug.Log("!!Solarboy!!: Hi Test!");
+        }
+
+        foreach (string i in words)
+        {
+            Debug.Log(i);
+        }
+        */
+
+        if (words.Contains("stan"))
+        {
+            Debug.Log("!!Solarboy!!: Hi Stan!");
+        }
+        else if (words.Contains("hey"))
+        {
+            Debug.Log("!!Solarboy!!: Yeah?");
         }
     }
 
@@ -48,15 +78,18 @@ public class HexSTT : MonoBehaviour
         dictationRecognizer.DictationResult += processDictationResult;
         dictationRecognizer.DictationHypothesis += (text) => {
             Info("Dictation result: " + text);
+            Debug.Log("Dictation result: " + text);
         };
         dictationRecognizer.DictationComplete += (completionCause) => {
             if (completionCause != DictationCompletionCause.Complete)
             {
                 Info("Dictation failed: "+ completionCause);
+                Debug.Log("Dictation failed: " + completionCause);
             }
         };
         dictationRecognizer.DictationError += (error, hresult) => {
             Warn("Dictation error:" + error + " hresult: " + hresult);
+            Debug.Log("Dictation error:" + error + " hresult: " + hresult);
         };
     }
 
@@ -70,4 +103,6 @@ public class HexSTT : MonoBehaviour
             dictationRecognizer.Dispose();
         }
     }
+
+
 }
