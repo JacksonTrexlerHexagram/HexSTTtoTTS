@@ -25,6 +25,10 @@ namespace Hexagram.SpeechToText
             {
                 startRecognition();
             }
+            else if (Input.GetMouseButtonDown(1))
+            {
+                stopRecognition();
+            }
         }
 
         public void startRecognition()
@@ -66,7 +70,7 @@ namespace Hexagram.SpeechToText
             }
             string sendText = "Ok then";
 
-            //Put something jucier here!
+             //Put something jucier here!
             //Or set this to string instead of void and send back to script to do it there.
             //TODO ^^^
             //string testText = "how are you";
